@@ -572,8 +572,8 @@ html, body {
         imageEl.style.display = "none";
       }
 
-      const prefix = nowPlaying ? "Now Playing" : "Last Played";
-      const fullText = `${prefix}: ${artist} • ${song}`;
+      const prefix = nowPlaying ? "" : "Last Played:";
+      const fullText = `${prefix} ${artist} • ${song}`;
       statusEl.textContent = fullText.length > 50 ? fullText.slice(0, 50) + "..." : fullText;
 
     } catch (err) {
