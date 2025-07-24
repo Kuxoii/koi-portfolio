@@ -542,7 +542,7 @@ html, body {
 
   async function fetchNowPlaying() {
     try {
-      const response = await fetch("https://kuxoii.com/now-playing", {
+        const response = await fetch("http://localhost:3000/now-playing", {
         method: "GET",
         headers: {
           "Accept": "application/json"
