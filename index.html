@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kuxoii's stuff'</title>
+  <title>Kuxoii's stuff</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
 html, body {
@@ -561,8 +561,10 @@ html, body {
         imageEl.style.display = "none";
       }
 
-      const fullText = `${artist} • ${song}`;
+      const prefix = nowPlaying ? "Now Playing" : "Last Played";
+      const fullText = `${prefix}: ${artist} • ${song}`;
       statusEl.textContent = fullText.length > 50 ? fullText.slice(0, 50) + "..." : fullText;
+
     } catch (err) {
       console.error("Now Playing widget error:", err);
       statusEl.textContent = "⚠️ Unable to fetch track.";
