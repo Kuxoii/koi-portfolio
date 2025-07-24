@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #222222;
+    font-family: 'Montserrat';
+    color: #ffffff;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-left-buttons {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.text-button {
+    background: linear-gradient(45deg, #000000, #000000);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background-size: 200% 200%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    z-index: 0;
+}
+
+.text-button:hover {
+    background: linear-gradient(270deg, #728cff, #4763ff);
+    background-size: 400% 400%;
+    animation: gradientShift 3s ease infinite, glowShift 3s ease infinite;
+    transform: scale(1.1);
+}
+
+.text-button:active {
+    transform: scale(0.95);
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes glowShift {
+    0% { box-shadow: 0 0 4px #728cff, 0 0 10px #4763ff; }
+    50% { box-shadow: 0 0 4px #4763ff, 0 0 16px #728cff; }
+    100% { box-shadow: 0 0 4px #728cff, 0 0 10px #4763ff; }
+}
+
+.main-frame {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.page-wrapper {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    position: absolute;
+    width: 100%;
+    max-width: 700px;
+}
+
+.page.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.page.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.text-label {
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+.image-label {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kuxoii Frame Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  color: #ffffff;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  background-color: #121212;
+  display: block; 
+}
+
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    .top-left-buttons {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    .text-button {
+      background: linear-gradient(45deg, #00000000, #00000000);
+      color: white;
+      font-weight: normal;
+      font-family: 'Montserrat';
+      border: none;
+      padding: 12px 20px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background-size: 200% 200%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.4s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .text-button:hover {
+      background: linear-gradient(270deg, #728cff, #4763ff);
+      background-size: 400% 400%;
+      animation: gradientShift 3s ease infinite, glowShift 3s ease infinite;
+      transform: scale(1.1);
+    }
+
+    .text-button:active {
+      transform: scale(0.95);
+    }
+
+    .arrow-icon {
+      width: 1em;
+      height: 1em;
+      transition: transform 0.4s ease;
+    }
+
+    .dropdown.open .arrow-icon {
+      transform: rotate(180deg);
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes glowShift {
+      0% { box-shadow: 0 0 4px #728cff, 0 0 10px #4763ff; }
+      50% { box-shadow: 0 0 4px #4763ff, 0 0 16px #728cff; }
+      100% { box-shadow: 0 0 4px #728cff, 0 0 10px #4763ff; }
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 52px;
+      left: 0;
+      flex-direction: column;
+      background: #00000000;
+      border-radius: 25px;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0);
+      overflow: hidden;
+      z-index: 1001;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .dropdown.open .dropdown-content {
+      display: flex;
+    }
+
+    .dropdown-content button {
+      background: linear-gradient(45deg, #3a3a3a00, #4a4a3a00);
+      color: white;
+      font-weight: normal;
+      font-family: 'Montserrat';
+      border: none;
+      padding: 12px 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background-size: 200% 200%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.4s ease;
+      text-align: left;
+      width: 100%;
+    }
+
+    .dropdown-content button:hover {
+      background: linear-gradient(270deg, #728cff, #4763ff);
+      background-size: 400% 400%;
+      animation: gradientShift 3s ease infinite, glowShift 3s ease infinite;
+      transform: scale(1.05);
+    }
+
+    .dropdown-content button:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+.main-frame {
+  width: 100%;
+  height: 100vh;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; 
+  box-sizing: border-box;
+  overflow-y: auto; 
+  scroll-behavior: smooth;
+}
+
+.page-wrapper {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.page {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 60px 0;
+}
+
+#home.page {
+  justify-content: center;
+  height: 100vh;
+  padding: 0 20px;
+}
+
+.page.active {
+  display: flex;
+}
+
+    .text-label {
+      font-size: 1.2rem;
+      line-height: 1.4;
+      font-weight: 300;
+      margin: 0;
+    }
+
+    .big-label {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    }
+
+    .home-label {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .home-label .stuff {
+      display: inline-block;
+      background: linear-gradient(270deg, #ffb6fc, #8df5ff, #ffdf8e, #ffb6fc);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textGradientGlow 4s ease infinite;
+      text-shadow: none;
+    }
+
+    @keyframes textGradientGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+.ui-frame {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 60px;
+  background-color: #1f1f1f;
+  border-radius: 40px;
+  padding: 80px;
+  width: 100%;
+  max-width: 2400px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+  margin-top: 60px;
+}
+
+.ui-image-button {
+  flex: 0 1 calc(50% - 40px);
+  max-width: calc(50% - 40px);
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  object-fit: cover;
+  object-position: center;
+  background-color: #2b2b2b;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ui-image-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  }
+}
+
+@media (max-width: 1024px) {
+  .ui-image-button {
+    flex: 0 1 calc(50% - 20px);
+    max-width: calc(50% - 20px);
+  }
+
+  .ui-frame {
+    padding: 60px;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ui-image-button {
+    flex: 0 1 calc(50% - 10px);
+    max-width: calc(50% - 10px);
+  }
+
+  .ui-frame {
+    padding: 40px 10px;
+    gap: 20px;
+  }
+
+  .ui-frame .text {
+    font-size: 1.4rem;
+  }
+}
+
+.ui-image-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.ui-frame .text {
+  width: 100%;
+  text-align: center;
+  font-size: 1.9rem; 
+  font-weight: 400;
+  margin: 0px 0 0px; 
+}
+
+.image-viewer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.25s ease;
+}
+
+.image-viewer-overlay img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+  transition: transform 0.3s ease;
+}
+
+.image-viewer-overlay .close-button {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0);
+  border: none;
+  color: white;
+  font-size: 1.6rem;
+  padding: 14px 20px;
+  cursor: pointer;
+  border-radius: 0 0 0 12px;
+  z-index: 10000; /* ensure it stays top of everything */
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.image-viewer-overlay .close-button:hover {
+  background: rgba(255, 255, 255, 0);
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 6px;
+  border: 2px solid #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+#now-playing-widget {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #fff;
+  z-index: 9999;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+  pointer-events: none;
+  user-select: none;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.icon-button-frame {
+  margin-top: 0px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-button {
+  width: 35px;
+  height: 35px;
+  padding: 8px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2c2c2c00;
+  transition: background 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 0 0 transparent;
+}
+
+.icon-button:hover {
+  background-color: var(--hover);
+  transform: scale(1.15);
+  box-shadow: 0 0 10px var(--hover);
+}
+
+.icon-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div class="top-left-buttons">
+    <button class="text-button" onclick="showPage('home')">Home</button>
+    <div class="dropdown" id="dropdown">
+      <button class="text-button" id="dropdownButton">
+        Creations
+        <svg xmlns="http://www.w3.org/2000/svg" class="arrow-icon" viewBox="0 0 512 512">
+          <path fill="white" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 
+          12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 
+          86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 
+          32.8 0 45.3l192 192z"/>
+        </svg>
+      </button>
+      <div class="dropdown-content" id="dropdownContent">
+        <button onclick="showPage('ui')">UI</button>
+        <button onclick="showPage('animation')">Animation</button>
+        <button onclick="showPage('scripting')">Scripting</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-frame">
+    <div class="page-wrapper">
+      <div id="home" class="page active">
+        <p class="home-label"><span class="stuff">KUXOII</span></p>
+        <p class="text-label">
+          - Hi I’m a Roblox dev with 3+ years of experience. I mess around with animating, coding, and UI. But honestly, UI is my main thing.<br>
+          - I take commissions too btw. Made this website cuz I was bored lmao. I’ll be dropping random stuff I make here, so stick around I guess.
+        </p>
+        <div class="icon-button-frame">
+  <a href="https://github.com/Kuxoii" target="_blank" class="icon-button" style="--hover: #000000;"><img src="Github.png" alt="GitHub"></a>
+  <a href="https://steamcommunity.com/id/Kuxoii/" target="_blank" class="icon-button" style="--hover: #0B3971;"><img src="SteamLogo.png" alt="YouTube"></a>
+  <a href="https://discord.com/users/1247675229204119635
+" target="_blank" class="icon-button" style="--hover: #5865F2;"><img src="steam (1).png" alt="Discord"></a>
+  <a href="https://www.roblox.com/users/1047046468/profile" target="_blank" class="icon-button" style="--hover: #3964FF;"><img src="RobloxLogo.png" alt="TikTok"></a>
+</div>
+      </div>
+<div id="ui" class="page">
+ <p class="big-label" style="margin-bottom: 12px;">MY UI DESIGNS</p>
+  <div class="ui-frame">
+    <p class="text">Modern UI</p>
+    <img src="Profile.png" alt="Concept 1" class="ui-image-button">
+    <img src="lmaogg.png" alt="Concept 2" class="ui-image-button">
+    <img src="Shoplol.png" alt="Concept 3" class="ui-image-button">
+    <img src="Loadout.png" alt="Concept 3" class="ui-image-button">
+    <img src="Leaderboard.png" alt="Concept 3" class="ui-image-button">
+    <img src="Loading.png" alt="Concept 3" class="ui-image-button">
+    <img src="WhatsNew.png" alt="Concept 3" class="ui-image-button">
+    <p class="text">Medieval UI</p>
+    <img src="MedievalMenu.png" alt="Concept 2" class="ui-image-button">
+    <img src="MedievalShop.png" alt="Concept 2" class="ui-image-button">
+    <img src="House.png" alt="Concept 2" class="ui-image-button">
+    <img src="Election.png" alt="Concept 2" class="ui-image-button">
+    <img src="RPName.png" alt="Concept 2" class="ui-image-button">
+    <img src="PeacePropose.png" alt="Concept 2" class="ui-image-button">
+    <img src="WarSchedule.png" alt="Concept 2" class="ui-image-button">
+    <img src="Bio.png" alt="Concept 2" class="ui-image-button">
+    <img src="MedievalLoading.png" alt="Concept 2" class="ui-image-button">
+    <img src="Keybindlol.png" alt="Concept 2" class="ui-image-button">
+    <p class="text">Sci-Fi UI</p>
+    <img src="scpgamepas.png" alt="Concept 2" class="ui-image-button">
+    <img src="scpmenu.png" alt="Concept 2" class="ui-image-button">
+    <img src="scpsetting.png" alt="Concept 2" class="ui-image-button">
+    <p class="text">More UI Styles soon...</p>
+  </div>
+</div>
+<div id="animation" class="page">
+  <p class="big-label">ANIMATIONS</p>
+  <div class="ui-frame">
+    <p class="text">coming soon, been making stuff just not ready to show yet.</p>
+  </div>
+</div>
+
+<div id="scripting" class="page">
+  <p class="big-label">SCRIPTS</p>
+  <div class="ui-frame">
+    <p class="text">coming soon, been making stuff just not ready to show yet.</p>
+  </div>
+</div>
+
+<div id="now-playing-widget" style="bottom: 20px; right: 20px; top: auto; left: auto;">
+  <img id="now-playing-image" src="" alt="Album Art" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover; margin-right: 12px; display: none;">
+  <div style="display: flex; flex-direction: column;">
+    <span id="now-playing-status">Loading track...</span>
+    <div style="display: flex; align-items: center; margin-top: 2px;">
+      <img src="fih.jpg" alt="Last.fm Icon" style="width: 14px; height: 14px; margin-right: 6px; opacity: 0.8; border-radius: 100px">
+      <span style="font-size: 0.8rem; opacity: 0.8;">Kuxoii</span>
+    </div>
+  </div>
+<a href="https://last.fm" target="_blank" style="
+  position: absolute;
+  bottom: 9px;
+  right: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+">
+  <img src="lastfmlogo.png" alt="Data Provided by Last.fm" style="
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    pointer-events: auto;
+  ">
+</a>
+</div>
+
+<script>
+  const POLL_INTERVAL = 15_000;
+  const statusEl = document.getElementById("now-playing-status");
+
+  async function fetchNowPlaying() {
+    try {
+      const res = await fetch("http://localhost:3000/now-playing");
+      const data = await res.json();
+      const track = data.recenttracks?.track?.[0];
+
+      if (!track) throw new Error("No track data");
+
+      const artist = track.artist["#text"];
+      const song = track.name;
+      const nowPlaying = track['@attr']?.nowplaying === "true";
+      const image = track.image?.pop()?.["#text"];
+
+      const imageEl = document.getElementById("now-playing-image");
+
+      if (image) {
+        imageEl.src = image;
+        imageEl.style.display = "block";
+      } else {
+        imageEl.style.display = "none";
+      }
+
+      const fullText = `${artist} • ${song}`;
+      statusEl.textContent = fullText.length > 50 ? fullText.slice(0, 50) + "..." : fullText;
+    } catch (err) {
+      console.error("Now Playing widget error:", err);
+      statusEl.textContent = "⚠️ Unable to fetch track.";
+      document.getElementById("now-playing-image").style.display = "none";
+    }
+  }
+
+  fetchNowPlaying();
+  setInterval(fetchNowPlaying, POLL_INTERVAL);
+</script>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.toggle('active', page.id === pageId);
+      });
+    }
+
+    const dropdown = document.getElementById('dropdown');
+    let dropdownTimeout;
+
+    dropdown.addEventListener('mouseenter', () => {
+      clearTimeout(dropdownTimeout);
+      dropdown.classList.add('open');
+    });
+
+    dropdown.addEventListener('mouseleave', () => {
+      dropdownTimeout = setTimeout(() => {
+        dropdown.classList.remove('open');
+      }, 200);
+    });
+  </script>
+
+  <script>
+    document.querySelectorAll('.ui-image-button').forEach(img => {
+      img.addEventListener('click', () => {
+        const overlay = document.createElement('div');
+        overlay.className = 'image-viewer-overlay';
+        overlay.innerHTML = `
+          <img src="${img.src}" alt="${img.alt}">
+          <button class="close-button" aria-label="Close">&times;</button>
+        `;
+        document.body.appendChild(overlay);
+
+        // Dismiss on click-outside or close button
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay || e.target.classList.contains('close-button')) {
+            overlay.style.animation = 'fadeOut 0.2s ease';
+            setTimeout(() => overlay.remove(), 150);
+          }
+        });
+      });
+    });
+  </script>
+
+
+</body>
+</html>
