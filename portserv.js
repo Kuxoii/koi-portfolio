@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 
-// 🔧 This is how you use node-fetch in CommonJS properly
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 const app = express();
