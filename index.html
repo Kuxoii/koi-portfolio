@@ -546,20 +546,19 @@ html, body {
         method: "GET",
         headers: {
           "Accept": "application/json",
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36"
+          "User-Agent": "Mozilla/5.0"
         },
         cache: "no-store",
         mode: "cors"
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const data = await response.json();
-      const track = data?.recenttracks?.track?.[0];
+      const tracks = data?.recenttracks?.track;
 
-      if (!track) throw new Error("No track data returned from Last.fm");
+      const track = Array.isArray(tracks) ? tracks[0] : tracks;
+      if (!track || !track.name) throw new Error("Invalid or empty track data");
 
       const artist = track?.artist?.["#text"] || "Unknown Artist";
       const song = track?.name || "Unknown Track";
@@ -578,8 +577,8 @@ html, body {
       statusEl.textContent = fullText.length > 50 ? fullText.slice(0, 50) + "..." : fullText;
 
     } catch (err) {
-      console.error("🎧 Now Playing widget error:", err);
-      statusEl.textContent = "⚠️ Unable to fetch track.";
+      console.error("🎧 Now Playing widget error:", err.message);
+      statusEl.textContent = "⚠️ No track found.";
       imageEl.style.display = "none";
     }
   }
