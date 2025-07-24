@@ -542,10 +542,11 @@ html, body {
 
   async function fetchNowPlaying() {
     try {
-        const response = await fetch("http://localhost:3000/now-playing", {
+      const response = await fetch("https://now-playing-server-production.up.railway.app/now-playing", {
         method: "GET",
         headers: {
-          "Accept": "application/json"
+          "Accept": "application/json",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36"
         },
         cache: "no-store",
         mode: "cors"
@@ -558,7 +559,7 @@ html, body {
       const data = await response.json();
       const track = data?.recenttracks?.track?.[0];
 
-      if (!track) throw new Error("No track data");
+      if (!track) throw new Error("No track data returned from Last.fm");
 
       const artist = track?.artist?.["#text"] || "Unknown Artist";
       const song = track?.name || "Unknown Track";
@@ -577,7 +578,7 @@ html, body {
       statusEl.textContent = fullText.length > 50 ? fullText.slice(0, 50) + "..." : fullText;
 
     } catch (err) {
-      console.error("🎧 Now Playing widget error:", err.message);
+      console.error("🎧 Now Playing widget error:", err);
       statusEl.textContent = "⚠️ Unable to fetch track.";
       imageEl.style.display = "none";
     }
